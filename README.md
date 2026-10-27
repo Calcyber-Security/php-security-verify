@@ -1,8 +1,8 @@
 # PHP Security Verify
 
-> **The backports tested here are only for installations that cannot upgrade PHP immediately.** Upgrade to the latest patched release of a currently supported PHP branch whenever possible. Use a backport as a temporary bridge while resolving an unavoidable upgrade blocker.
+> **The backports tested here are for legacy systems that cannot run supported PHP—including applications that cannot be upgraded at all.** Upgrade to supported, patched PHP whenever feasible. Backports provide targeted risk reduction where an application must remain on legacy PHP, whether the upgrade is delayed or impossible for that application.
 >
-> A backport covers documented issues only; it does not restore upstream support or provide comprehensive security coverage. Prefer a fixed, maintained operating-system or LTS vendor package where available, and keep a plan to upgrade, replace or retire unsupported PHP. See [PHP's current support policy](https://www.php.net/supported-versions.php).
+> A backport covers documented issues only; it does not restore upstream support or provide comprehensive security coverage. Continued legacy operation requires ongoing maintenance, isolation, monitoring and security review. Prefer a fixed, maintained operating-system or LTS vendor package where available. Where upgrading is impossible, consider application replacement or system retirement as the longer-term path. This is not a promise of indefinite security or future patch coverage. See [PHP's current support policy](https://www.php.net/supported-versions.php).
 
 Active single-site PHP2Shell regression checks and local backport validation for
 CVE-2026-109618 and CVE-2026-109619. The patches under test are in
