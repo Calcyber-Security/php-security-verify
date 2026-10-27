@@ -1,5 +1,9 @@
 # PHP Security Verify
 
+> **The backports tested here are only for installations that cannot upgrade PHP immediately.** Upgrade to the latest patched release of a currently supported PHP branch whenever possible. Use a backport as a temporary bridge while resolving an unavoidable upgrade blocker.
+>
+> A backport covers documented issues only; it does not restore upstream support or provide comprehensive security coverage. Prefer a fixed, maintained operating-system or LTS vendor package where available, and keep a plan to upgrade, replace or retire unsupported PHP. See [PHP's current support policy](https://www.php.net/supported-versions.php).
+
 Active single-site PHP2Shell regression checks and local backport validation for
 CVE-2026-109618 and CVE-2026-109619. The patches under test are in
 [CalCyber PHP Security Backports](https://github.com/Calcyber-Security/php-security-backports).
