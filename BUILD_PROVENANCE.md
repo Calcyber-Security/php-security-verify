@@ -1,0 +1,13 @@
+# Actual build provenance and budget
+
+Verified through GitHub API: upstream annotated php-7.4.33 tag points to dca8d5565b947270a29f232bc54efd9df3b92b94. CalCyber mitigation 16c7f82e9254eb50bf8fbc5412af5a41856db99b has that exact parent. Branch head 51c83a94789563515a275a3f55dc52ca3cd867fd has mitigation as parent and changes only NEWS, configure.ac, main/php_version.h. Mitigation changes 17 engine/session/multipart files. This establishes source ancestry, not proof of complete CVE remediation.
+
+GitHub API file names and complete per-file patch fields were compared with upstream PHP commit 712e60f9edfd03f0960fc4fc3c2c375f42b90aa2: all 17 matched exactly. Downloaded patch SHA-256 values: mitigation AD8E568B543EE2D29A07D5DF5CF7336616EBF145D156D9C8D4D4F0C1D9A90B1B; version C9F4A7E7607A31F5F2043B8E6A7AA926655CA002BE81580DF2462CFE5A015324.
+
+Corrected baseline's first actual compilation stopped with exit 2, not OOM, because GCC exhausted its 16 MiB /tmp. Failure tail is saved as baseline-temp-failure.log. Corrected script routes compiler TMPDIR into the existing 1 GiB work tmpfs and clears inherited make flags; no RAM/CPU limit was enlarged. Host crash/disconnect condition was not triggered.
+
+Immutable amd64 official PHP 7.4.33 CLI base manifest: sha256:691f9ae2a3639de11d95f507bc29c723a7f27b79bdf91317aef8ded35f9864ce; config ID sha256:7bbbb12d14986e855e5213c6b349e97e0f2e3da82536ec87da11a6c66fe2fcb2. Registry layers total approximately 166 MB compressed. Both builds extract this same image's PHP release archive and compile identical minimal CLI/CGI/session configuration. Patched build applies only the two pinned commit patches. These are deliberately minimal regression builds, not production packaging or mod_php replicas.
+
+Builds run sequentially: 1 CPU, 2 GiB memory including 1 GiB build tmpfs, no extra swap, 64 PIDs, 30-minute timeout, make -j1, no network, host mounts, GPU or extra capabilities. Persistent compiler installation output is expected below 100 MB per build. Budget: 1 GB image download/unpack, 1 GB per builder overlay, 100 MB exported artifacts, 1 MB logs per container. Before starting free space exceeded 800 GB; stop new work if less than 10 GB remains or new lab persistent storage exceeds 4 GB. No hard Docker graph quota is asserted. Never clean unrelated Docker resources.
+
+First builder could not execute buildconf because tmpfs defaulted to noexec; no compiler or test ran. Corrected builder explicitly uses exec only on isolated /work. Host stayed connected and healthy. Docker local logging also required compress=false for max-file=1; this was corrected before toolchain inspection started. These configuration corrections were not retries after a host crash.

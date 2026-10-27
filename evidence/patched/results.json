@@ -1,0 +1,85 @@
+{
+  "variant": "patched",
+  "builder": "calcyber-lab-patched-build",
+  "container": "calcyber-php-regression-patched-results-20261026f",
+  "expected_version": "7.4.33-p1",
+  "binary_sha256": {
+    "php": "ffa41f15dc15eb82f48995b5262cf5bd19020aff8a0933398861e43ac686f34b",
+    "php-cgi": "dc91a99efde25aeb9025fe5e6ace45f877004d1e3ce8d97956f0621a676d0c83"
+  },
+  "checks": {
+    "pre_control": {
+      "passed": true,
+      "response": {
+        "exit_code": 0,
+        "stdout": "X-Powered-By: PHP/7.4.33-p1\r\nContent-type: text/plain;charset=UTF-8\r\n\r\nCALCYBER_LAB_MARKER=CALCYBER_ISOLATED_LAB_CONTROL\nCALCYBER_LAB_VERSION=7.4.33-p1\nCALCYBER_LAB_SAPI=cgi-fcgi\nCALCYBER_LAB_FILE_COUNT=0\nCALCYBER_LAB_MULTIPART_LIMIT=10\nCALCYBER_LAB_COOKIE=MISSING\nCALCYBER_LAB_PROGRESS=1\nCALCYBER_LAB_SESSION_PROGRESS_FILE=ABSENT\nCALCYBER_LAB_FIELD_control=1\n",
+        "stderr": ""
+      }
+    },
+    "multipart_limit": {
+      "passed": true,
+      "response": {
+        "exit_code": 0,
+        "stdout": "X-Powered-By: PHP/7.4.33-p1\r\nContent-type: text/html; charset=UTF-8\r\n\r\n\nWarning: Unknown: Multipart body parts limit exceeded 2. To increase the limit change max_multipart_body_parts in php.ini. in Unknown on line 0\n\nWarning: Cannot modify header information - headers already sent in /input/endpoint.php on line 3\nCALCYBER_LAB_MARKER=CALCYBER_ISOLATED_LAB_CONTROL\nCALCYBER_LAB_VERSION=7.4.33-p1\nCALCYBER_LAB_SAPI=cgi-fcgi\nCALCYBER_LAB_FILE_COUNT=0\nCALCYBER_LAB_MULTIPART_LIMIT=2\nCALCYBER_LAB_COOKIE=MISSING\nCALCYBER_LAB_PROGRESS=1\nCALCYBER_LAB_SESSION_PROGRESS_FILE=ABSENT\nCALCYBER_LAB_FIELD_one=1\nCALCYBER_LAB_FIELD_two=2\n",
+        "stderr": ""
+      }
+    },
+    "session_lifecycle": {
+      "passed": true,
+      "assertion": "valid one-byte upload creates session progress only before mitigation; no invalid-session exploitability claim",
+      "warning_markers": [
+        false,
+        false,
+        false
+      ],
+      "response": {
+        "exit_code": 0,
+        "stdout": "X-Powered-By: PHP/7.4.33-p1\r\nContent-type: text/plain;charset=UTF-8\r\n\r\nCALCYBER_LAB_MARKER=CALCYBER_ISOLATED_LAB_CONTROL\nCALCYBER_LAB_VERSION=7.4.33-p1\nCALCYBER_LAB_SAPI=cgi-fcgi\nCALCYBER_LAB_FILE_COUNT=1\nCALCYBER_LAB_MULTIPART_LIMIT=10\nCALCYBER_LAB_COOKIE=calcyberfixture\nCALCYBER_LAB_PROGRESS=1\nCALCYBER_LAB_SESSION_PROGRESS_FILE=ABSENT\nCALCYBER_LAB_FIELD_PHP_SESSION_UPLOAD_PROGRESS=fixture\n",
+        "stderr": ""
+      }
+    },
+    "invalid_session_startup": {
+      "passed": true,
+      "warning_markers": [
+        false,
+        false,
+        false
+      ],
+      "response": {
+        "exit_code": 0,
+        "stdout": "X-Powered-By: PHP/7.4.33-p1\r\nContent-type: text/plain;charset=UTF-8\r\n\r\nCALCYBER_LAB_MARKER=CALCYBER_ISOLATED_LAB_CONTROL\nCALCYBER_LAB_VERSION=7.4.33-p1\nCALCYBER_LAB_SAPI=cgi-fcgi\nCALCYBER_LAB_FILE_COUNT=1\nCALCYBER_LAB_MULTIPART_LIMIT=10\nCALCYBER_LAB_COOKIE=_\nCALCYBER_LAB_PROGRESS=1\nCALCYBER_LAB_SESSION_PROGRESS_FILE=ABSENT\nCALCYBER_LAB_FIELD_PHP_SESSION_UPLOAD_PROGRESS=fixture\n",
+        "stderr": ""
+      }
+    },
+    "oom_lifecycle": {
+      "passed": true,
+      "response": {
+        "exit_code": 1,
+        "stdout": "CALCYBER_OOM_STARTED\n",
+        "stderr": "\nFatal error: Allowed memory size of 8388608 bytes exhausted (tried to allocate 67108896 bytes) in /input/oom.php on line 8\n"
+      }
+    },
+    "post_control": {
+      "passed": true,
+      "response": {
+        "exit_code": 0,
+        "stdout": "X-Powered-By: PHP/7.4.33-p1\r\nContent-type: text/plain;charset=UTF-8\r\n\r\nCALCYBER_LAB_MARKER=CALCYBER_ISOLATED_LAB_CONTROL\nCALCYBER_LAB_VERSION=7.4.33-p1\nCALCYBER_LAB_SAPI=cgi-fcgi\nCALCYBER_LAB_FILE_COUNT=0\nCALCYBER_LAB_MULTIPART_LIMIT=10\nCALCYBER_LAB_COOKIE=MISSING\nCALCYBER_LAB_PROGRESS=1\nCALCYBER_LAB_SESSION_PROGRESS_FILE=ABSENT\nCALCYBER_LAB_FIELD_control=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  "builder_source_image": "sha256:691f9ae2a3639de11d95f507bc29c723a7f27b79bdf91317aef8ded35f9864ce",
+  "runtime_image": "sha256:13a04cb54874065dea402366a70f67e3a9c69ec893b18391abbe5a56a9b322ba",
+  "build_script_sha256": "8f8cd61e0403aec4ff931a123d6e62f4bc6466d5e7645cae4359bda853ec1231",
+  "isolation": {
+    "NetworkMode": "none",
+    "Memory": 268435456,
+    "MemorySwap": 268435456,
+    "NanoCpus": 500000000,
+    "PidsLimit": 32,
+    "ReadonlyRootfs": true
+  },
+  "scope": "Locally compiled CLI/CGI fixtures only; no deployed service or exploitability claim.",
+  "container_oom_killed": false,
+  "status": "LAB_ASSERTIONS_PASS"
+}

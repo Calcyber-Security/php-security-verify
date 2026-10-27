@@ -1,0 +1,60 @@
+From 51c83a94789563515a275a3f55dc52ca3cd867fd Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 23 Oct 2026 03:31:04 +0000
+Subject: [PATCH] Update versions for PHP 7.4.33-p1
+
+Mark the build carrying the fixes for CVE-2026-109618 and
+CVE-2026-109619 as a patch release on top of 7.4.33.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01JkUDT3kv7wrUffMbAA2JEc
+---
+ NEWS               | 8 ++++++++
+ configure.ac       | 2 +-
+ main/php_version.h | 4 ++--
+ 3 files changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/NEWS b/NEWS
+index 8a8c0c9285d..c4bf48c61d8 100644
+--- a/NEWS
++++ b/NEWS
+@@ -1,5 +1,13 @@
+ PHP                                                                        NEWS
+ |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
++23 Oct 2026, PHP 7.4.33-p1
++
++- Core:
++  . Fixed GHSA-w8hw-w9fx-j79w (Avoid state corruption via bailout).
++    (CVE-2026-109618) (Arnaud, ilutov)
++  . Fixed GHSA-6wmf-4rv5-p3rp (Avoid state corruption via bailout).
++    (CVE-2026-109619) (Arnaud, ilutov)
++
+ 03 Nov 2022, PHP 7.4.33
+ 
+ - GD:
+diff --git a/configure.ac b/configure.ac
+index 21c92b3ff69..04a412da123 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -17,7 +17,7 @@ dnl Basic autoconf initialization, generation of config.nice.
+ dnl ----------------------------------------------------------------------------
+ 
+ AC_PREREQ([2.68])
+-AC_INIT([PHP],[7.4.33],[https://bugs.php.net],[php],[https://www.php.net])
++AC_INIT([PHP],[7.4.33-p1],[https://bugs.php.net],[php],[https://www.php.net])
+ AC_CONFIG_SRCDIR([main/php_version.h])
+ AC_CONFIG_AUX_DIR([build])
+ AC_PRESERVE_HELP_ORDER
+diff --git a/main/php_version.h b/main/php_version.h
+index f2b90483f23..902d2b2acf9 100644
+--- a/main/php_version.h
++++ b/main/php_version.h
+@@ -3,6 +3,6 @@
+ #define PHP_MAJOR_VERSION 7
+ #define PHP_MINOR_VERSION 4
+ #define PHP_RELEASE_VERSION 33
+-#define PHP_EXTRA_VERSION ""
+-#define PHP_VERSION "7.4.33"
++#define PHP_EXTRA_VERSION "-p1"
++#define PHP_VERSION "7.4.33-p1"
+ #define PHP_VERSION_ID 70433
