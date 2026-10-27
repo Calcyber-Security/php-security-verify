@@ -24,10 +24,15 @@ commit `712e60f9edfd03f0960fc4fc3c2c375f42b90aa2`. The version commit is
 is retained in the patch. Publishing these files does not claim authorship of
 the upstream fixes or endorsement by the PHP Group or Zend Technologies.
 
-The local Python runner, unit tests and PHP fixtures were independently authored
-for this finite lab. The remote scanner and large multipart sweep from the
-earlier test bundle are not included. No repository-wide license is imposed on
-the upstream code by this notice.
+The local Python lab runner, unit tests and PHP fixtures were independently
+authored for the finite lab. The active request shape in `verify.py` is derived
+from the public [Assetnote scanner](https://github.com/assetnote/php2shell-scanner)
+and [ProjectDiscovery template](https://github.com/projectdiscovery/nuclei-templates/blob/main/http/cves/2026/CVE-2026-109618.yaml).
+Their MIT notices are retained in [Assetnote-MIT.txt](licenses/Assetnote-MIT.txt)
+and [ProjectDiscovery-MIT.txt](licenses/ProjectDiscovery-MIT.txt). The request
+shape is attributed to the original researchers; this project does not claim
+authorship of the underlying discovery or proof of code execution.
+No repository-wide license is imposed on upstream code by this notice.
 
 License texts were retrieved from the pinned upstream source:
 

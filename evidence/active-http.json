@@ -1,0 +1,313 @@
+{
+  "generated_utc": "2026-10-27T04:41:48.884391+00:00",
+  "status": "ACTIVE_HTTP_DIFFERENTIAL_PASS",
+  "results": {
+    "baseline": {
+      "schema": "calcyber-php-active-check/v1",
+      "generated_utc": "2026-10-27T04:41:40.116811+00:00",
+      "target_origin": "http://127.0.0.1:40729",
+      "verdict": "LEGACY_SESSION_BEHAVIOR_OBSERVED",
+      "reason": "All three pre-initialization session warning categories appeared only on the probe.",
+      "rce_proven": false,
+      "patch_verified": false,
+      "profile": "bounded",
+      "requests": 4,
+      "observations": [
+        {
+          "probe": "session-lifecycle",
+          "verdict": "LEGACY_SESSION_BEHAVIOR_OBSERVED",
+          "reason": "All three pre-initialization session warning categories appeared only on the probe."
+        }
+      ],
+      "exchanges": [
+        {
+          "label": "pre-health",
+          "method": "GET",
+          "status": 200,
+          "body_bytes": 255,
+          "body_sha256": "11ecb925c312a89a25fcd48448f90531fad3d72d3e06bcdc9fb03a093952eaa2",
+          "response_truncated": false,
+          "attempted_body_bytes": 0,
+          "elapsed_seconds": 0.225,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        },
+        {
+          "label": "multipart-control",
+          "method": "POST",
+          "status": 200,
+          "body_bytes": 284,
+          "body_sha256": "525b24418ce3b5f58703b0486b088c2141e308ea1715ed05f7955037c6098498",
+          "response_truncated": false,
+          "attempted_body_bytes": 95,
+          "elapsed_seconds": 0.221,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        },
+        {
+          "label": "session-lifecycle",
+          "method": "POST",
+          "status": 200,
+          "body_bytes": 1194,
+          "body_sha256": "dc83c2b83a0937ff0f16ed8a4ba6a82d701c8012adab9e8d33ef50a66c3ff46e",
+          "response_truncated": false,
+          "attempted_body_bytes": 362,
+          "elapsed_seconds": 0.209,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": true,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        },
+        {
+          "label": "post-session-health",
+          "method": "GET",
+          "status": 200,
+          "body_bytes": 255,
+          "body_sha256": "11ecb925c312a89a25fcd48448f90531fad3d72d3e06bcdc9fb03a093952eaa2",
+          "response_truncated": false,
+          "attempted_body_bytes": 0,
+          "elapsed_seconds": 0.228,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        }
+      ],
+      "limits": [
+        "Single URL, serial requests, no redirect following or retries.",
+        "Worker reuse and all backends cannot be guaranteed over HTTP.",
+        "Header versions, CalCyber suffixes and clean responses never establish a fix.",
+        "Positive warning/crash signatures are not a demonstration of code execution."
+      ],
+      "independent_parser_test": {
+        "verdict": "VULNERABLE_OOM_PATH_OBSERVED",
+        "reason": "Multipart startup produced the legacy in-band OOM/Unknown signature.",
+        "control": {
+          "label": "isolated-parser-control",
+          "method": "POST",
+          "status": 200,
+          "body_bytes": 284,
+          "body_sha256": "525b24418ce3b5f58703b0486b088c2141e308ea1715ed05f7955037c6098498",
+          "response_truncated": false,
+          "attempted_body_bytes": 95,
+          "elapsed_seconds": 0.231,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        },
+        "probe": {
+          "label": "isolated-parser-probe",
+          "method": "POST",
+          "status": 200,
+          "body_bytes": 116,
+          "body_sha256": "40842501465af11a61fc80131be0f1cb1954e80161074a0e892a726162753d36",
+          "response_truncated": false,
+          "attempted_body_bytes": 1048575,
+          "elapsed_seconds": 0.542,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": true,
+          "multipart_limit_warning": false
+        },
+        "post": {
+          "label": "isolated-parser-post-health",
+          "method": "GET",
+          "status": 200,
+          "body_bytes": 255,
+          "body_sha256": "11ecb925c312a89a25fcd48448f90531fad3d72d3e06bcdc9fb03a093952eaa2",
+          "response_truncated": false,
+          "attempted_body_bytes": 0,
+          "elapsed_seconds": 0.221,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        }
+      },
+      "validation_scope": "Loopback HTTP/CGI adapter, one disposable CGI child per request; not persistent Apache/FPM."
+    },
+    "patched": {
+      "schema": "calcyber-php-active-check/v1",
+      "generated_utc": "2026-10-27T04:41:45.647966+00:00",
+      "target_origin": "http://127.0.0.1:36289",
+      "verdict": "MITIGATION_BEHAVIOR_OBSERVED",
+      "reason": "The multipart part-limit mitigation actively rejected excess parsing work; full fix remains unverified.",
+      "rce_proven": false,
+      "patch_verified": false,
+      "profile": "bounded",
+      "requests": 6,
+      "observations": [
+        {
+          "probe": "session-lifecycle",
+          "verdict": "NO_VULNERABLE_BEHAVIOR_OBSERVED",
+          "reason": "No tested signature appeared. Suppressed errors, intermediaries and untested lifecycle paths prevent a patched verdict."
+        },
+        {
+          "probe": "multipart-1MiB-4000parts",
+          "verdict": "MITIGATION_BEHAVIOR_OBSERVED",
+          "reason": "The multipart part-limit mitigation actively rejected excess parsing work; full fix remains unverified."
+        }
+      ],
+      "exchanges": [
+        {
+          "label": "pre-health",
+          "method": "GET",
+          "status": 200,
+          "body_bytes": 260,
+          "body_sha256": "b9de0d30d4b9a7c5d456698ceda0735d985ac458fe7bf3e980477fde37c17e57",
+          "response_truncated": false,
+          "attempted_body_bytes": 0,
+          "elapsed_seconds": 0.207,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        },
+        {
+          "label": "multipart-control",
+          "method": "POST",
+          "status": 200,
+          "body_bytes": 289,
+          "body_sha256": "8d7a36a314d450ba93becf71c5d944205e76bf1f6ebe691412280d3a50259af8",
+          "response_truncated": false,
+          "attempted_body_bytes": 95,
+          "elapsed_seconds": 0.208,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        },
+        {
+          "label": "session-lifecycle",
+          "method": "POST",
+          "status": 200,
+          "body_bytes": 326,
+          "body_sha256": "5b8b523ef95f2d38704fea34991abca72dcd0ecb1295c9c2b004c0e46f4b45d2",
+          "response_truncated": false,
+          "attempted_body_bytes": 362,
+          "elapsed_seconds": 0.213,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        },
+        {
+          "label": "post-session-health",
+          "method": "GET",
+          "status": 200,
+          "body_bytes": 260,
+          "body_sha256": "b9de0d30d4b9a7c5d456698ceda0735d985ac458fe7bf3e980477fde37c17e57",
+          "response_truncated": false,
+          "attempted_body_bytes": 0,
+          "elapsed_seconds": 0.215,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        },
+        {
+          "label": "multipart-1MiB-4000parts",
+          "method": "POST",
+          "status": 200,
+          "body_bytes": 507,
+          "body_sha256": "ae974e12722ba7b2d9669b9fdcea6bb6a3aab4ab55347f46af1cce67c2f7d47d",
+          "response_truncated": false,
+          "attempted_body_bytes": 1048575,
+          "elapsed_seconds": 0.287,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": true
+        },
+        {
+          "label": "post-1MiB-health",
+          "method": "GET",
+          "status": 200,
+          "body_bytes": 260,
+          "body_sha256": "b9de0d30d4b9a7c5d456698ceda0735d985ac458fe7bf3e980477fde37c17e57",
+          "response_truncated": false,
+          "attempted_body_bytes": 0,
+          "elapsed_seconds": 0.21,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        }
+      ],
+      "limits": [
+        "Single URL, serial requests, no redirect following or retries.",
+        "Worker reuse and all backends cannot be guaranteed over HTTP.",
+        "Header versions, CalCyber suffixes and clean responses never establish a fix.",
+        "Positive warning/crash signatures are not a demonstration of code execution."
+      ],
+      "independent_parser_test": {
+        "verdict": "MITIGATION_BEHAVIOR_OBSERVED",
+        "reason": "The multipart part-limit mitigation actively rejected excess parsing work; full fix remains unverified.",
+        "control": {
+          "label": "isolated-parser-control",
+          "method": "POST",
+          "status": 200,
+          "body_bytes": 289,
+          "body_sha256": "8d7a36a314d450ba93becf71c5d944205e76bf1f6ebe691412280d3a50259af8",
+          "response_truncated": false,
+          "attempted_body_bytes": 95,
+          "elapsed_seconds": 0.19,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        },
+        "probe": {
+          "label": "isolated-parser-probe",
+          "method": "POST",
+          "status": 200,
+          "body_bytes": 507,
+          "body_sha256": "ae974e12722ba7b2d9669b9fdcea6bb6a3aab4ab55347f46af1cce67c2f7d47d",
+          "response_truncated": false,
+          "attempted_body_bytes": 1048575,
+          "elapsed_seconds": 0.314,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": true
+        },
+        "post": {
+          "label": "isolated-parser-post-health",
+          "method": "GET",
+          "status": 200,
+          "body_bytes": 260,
+          "body_sha256": "b9de0d30d4b9a7c5d456698ceda0735d985ac458fe7bf3e980477fde37c17e57",
+          "response_truncated": false,
+          "attempted_body_bytes": 0,
+          "elapsed_seconds": 0.209,
+          "error_type": null,
+          "php_version_reported": null,
+          "session_warning": false,
+          "startup_oom": false,
+          "multipart_limit_warning": false
+        }
+      },
+      "validation_scope": "Loopback HTTP/CGI adapter, one disposable CGI child per request; not persistent Apache/FPM."
+    }
+  }
+}

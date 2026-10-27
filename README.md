@@ -1,8 +1,77 @@
 # PHP Security Verify
 
-Local red-team regression tests for the [CalCyber PHP security backports](https://github.com/Calcyber-Security/php-security-backports)
-for CVE-2026-109618 and CVE-2026-109619. This runner compares matched unpatched and
-patched builds in disposable Docker containers.
+Active single-site PHP2Shell regression checks and local backport validation for
+CVE-2026-109618 and CVE-2026-109619. The patches under test are in
+[CalCyber PHP Security Backports](https://github.com/Calcyber-Security/php-security-backports).
+
+## Download and run against your own PHP site
+
+Download [verify.py](https://raw.githubusercontent.com/Calcyber-Security/php-security-verify/main/verify.py).
+It needs Python 3.10+ and its standard library. No Docker, PHP installation on
+your laptop, dependencies or local lab are required for this command:
+
+```sh
+python3 verify.py https://your-site.example/index.php --acknowledge-impact --output site-result.json
+```
+
+Windows: use `py -3` in place of `python3`.
+
+**This is an intrusive active test.** Use a PHP route you are authorized to test,
+not a real upload, payment or business-action handler. It sends a small upload
+and a public 1 MiB multipart/OOM regression request. It can terminate PHP
+workers, disrupt production requests, or trigger application upload side
+effects. The acknowledgment flag is required before any request is sent.
+
+The command uses active response evidence; PHP version headers do not decide
+the result. It does not execute a remote system command. If you require command
+execution as proof, this client does not provide that proof. See the
+[review of the supplied RCE PoC](POC_REVIEW.md).
+
+Default: at most six serial requests to that exact URL, normal controls before
+and health checks after probes, one 1 MiB parser probe, TLS certificate
+verification, 256 KiB response capture, no redirects, discovery, concurrency or
+retries. It stops on filtering, rate limiting, health problems or decisive
+behavior. Response bodies, authentication headers, URL paths and query strings
+are excluded from the JSON report.
+
+- `--session-only` sends at most four requests and omits the OOM/parser probe.
+  This still exercises session startup and is not impact-free.
+- `--extended` permits the public 8 MiB and 20 MiB probes if earlier results show
+  no decisive behavior: at most ten requests and about 29 MiB of parser inputs.
+- `--headers-file private-headers.json` loads any required authentication
+  headers from a local JSON object. It is not included in reports. The session
+  probe replaces `PHPSESSID` with its test value, so PHP-session-authenticated
+  routes may return a login boundary and must remain inconclusive.
+- `--timeout 10` controls the per-operation/body budget. Choose a fresh output
+  filename; existing reports are not overwritten.
+
+### Reading the result
+
+| Result | What was actually observed |
+| --- | --- |
+| `LEGACY_SESSION_BEHAVIOR_OBSERVED` | The probe exposed all three legacy session warning categories absent from controls. It does not establish cross-request exploitation. |
+| `VULNERABLE_OOM_PATH_OBSERVED` | The multipart request produced the legacy startup OOM/Unknown signature. RCE is not demonstrated. |
+| `WORKER_FAILURE_SUSPECTED` | Empty/error response or a transport failure: investigate logs; patched workers can also terminate on hard OOM. |
+| `HEALTH_CHECK_FAILED` | The route was unhealthy after the probe. Stop testing and investigate. |
+| `MITIGATION_BEHAVIOR_OBSERVED` | The runtime's multipart part limit actively fired. This is positive mitigation evidence, not complete patch verification. |
+| `NO_VULNERABLE_BEHAVIOR_OBSERVED` | No tested signature appeared. Hidden errors, proxies, configurations and untested paths prevent a patched verdict. |
+| `INCONCLUSIVE` / `RATE_LIMITED` | No usable runtime conclusion; testing stopped. |
+
+Exit codes: `10` means legacy session/OOM behavior, `11` means a suspected worker
+failure or failed health check, `20` means mitigation evidence/no signature/
+inconclusive, and `2` means invalid CLI input. **No exit code means the site is
+secure.** Reports always keep `rce_proven=false` and `patch_verified=false`.
+
+The active HTTP client was validated against the exact unpatched/backported
+PHP 7.4 CGI builds through a loopback HTTP adapter. It distinguished the legacy
+session and startup OOM paths from the patched multipart limit. Evidence is in
+[active-http.json](evidence/active-http.json). This is HTTP/CGI validation;
+persistent Apache/FPM workers and production deployments were not validated.
+
+## Local developer regression lab
+
+The original developer runner compares matched unpatched and patched builds in
+disposable Docker containers. It is separate from the URL-based command above.
 
 The recorded 26 October 2026 lab run passed **12/12 runtime assertions** and
 **6/6 runner unit tests**. See [the JSON summary](evidence/summary.json) and
@@ -10,7 +79,7 @@ The recorded 26 October 2026 lab run passed **12/12 runtime assertions** and
 the tested PHP 7.4.33 and 7.4.33-p1 CLI/CGI builds; it is not a deployed-site
 vulnerability scanner or a guarantee for every backport branch.
 
-The runner accepts no URL, creates no listener and publishes no port.
+The developer runner accepts no URL, creates no listener and publishes no port.
 
 ## Tested scope
 

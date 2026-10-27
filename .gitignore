@@ -5,3 +5,5 @@ results*/
 !evidence/**/results.json
 *.env
 .env*
+private-headers*.json
+site-result*.json
