@@ -27,6 +27,12 @@ the result. It does not execute a remote system command. If you require command
 execution as proof, this client does not provide that proof. See the
 [review of the supplied RCE PoC](POC_REVIEW.md).
 
+**CalCyber Apache comparison:** matched PHP 7.4.33 and CalCyber 7.4.33-p1 builds
+passed 12/12 runtime assertions. The same producer/cleanup sequence corrupted
+the unpatched worker's heap; the backport exited the worker before stale state
+could be consumed. See [the validation and its scope](APACHE_VALIDATION.md).
+Full command execution on PHP 7.4 was not established.
+
 Default: at most six serial requests to that exact URL, normal controls before
 and health checks after probes, one 1 MiB parser probe, TLS certificate
 verification, 256 KiB response capture, no redirects, discovery, concurrency or
@@ -65,8 +71,9 @@ secure.** Reports always keep `rce_proven=false` and `patch_verified=false`.
 The active HTTP client was validated against the exact unpatched/backported
 PHP 7.4 CGI builds through a loopback HTTP adapter. It distinguished the legacy
 session and startup OOM paths from the patched multipart limit. Evidence is in
-[active-http.json](evidence/active-http.json). This is HTTP/CGI validation;
-persistent Apache/FPM workers and production deployments were not validated.
+[active-http.json](evidence/active-http.json). That initial run used HTTP/CGI;
+the subsequent [Apache comparison](APACHE_VALIDATION.md) covers a controlled
+persistent mod_php worker. FPM and production deployments remain unvalidated.
 
 ## Local developer regression lab
 
@@ -94,7 +101,8 @@ The developer runner accepts no URL, creates no listener and publishes no port.
 This is a finite regression test of the reviewed legacy mitigation. It does not
 prove RCE, complete CVE absence, application compatibility, loaded Apache/FPM
 identity, or coverage of other PHP versions/branches. CGI children are separate
-processes; persistent worker/request reuse is not covered.
+processes; the original CLI/CGI suite does not cover persistent worker reuse.
+The later [Apache validation](APACHE_VALIDATION.md) adds that specific coverage.
 
 ## Assertions
 

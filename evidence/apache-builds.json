@@ -1,0 +1,40 @@
+{
+  "status": "BOTH_BUILDS_COMPLETE",
+  "dev_image": "sha256:a7eb2edb1cf0a30a7c2f867bdccf03f029ce3e1c159a0c4503310161162de185",
+  "builders": {
+    "baseline": {
+      "name": "calcyber-apache74-baseline-build-20261026-v1",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-27T05:04:06.889660451Z",
+        "FinishedAt": "2026-10-27T05:06:59.93809019Z"
+      },
+      "elapsed_seconds": 181
+    },
+    "patched": {
+      "name": "calcyber-apache74-patched-build-20261026-v1",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-27T05:07:09.384451625Z",
+        "FinishedAt": "2026-10-27T05:10:01.439552614Z"
+      },
+      "elapsed_seconds": 181
+    }
+  }
+}

@@ -7,3 +7,9 @@ results*/
 .env*
 private-headers*.json
 site-result*.json
+regression/apache/poc_109618.py
+regression/apache/build-input/
+regression/apache/apache-artifacts-*/
+regression/apache/apache-runtime-input*/
+regression/apache/apache-*.json
+regression/apache/apache-*.log

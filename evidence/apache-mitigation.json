@@ -1,0 +1,303 @@
+{
+  "status": "APACHE_MITIGATION_DIFFERENTIAL_PASS",
+  "poc_sha256": "ac58c5ab5a487af59a26625e458af9b115b1e7041b190e048d9b4c9ef2109378",
+  "rce_positive_control_established": false,
+  "rce_patch_verified": false,
+  "scope": "Matched minimal PHP 7.4.33 and CalCyber 7.4.33-p1 Apache modules; finite lifecycle regressions.",
+  "variants": {
+    "baseline": {
+      "variant": "baseline",
+      "name": "calcyber-apache74-baseline-runtime-20261026-v2",
+      "module_sha256": "a9d5c774e9e883c67bea951d936986a19c75a8a4a8171931d5bfe8e2e98e7fdd",
+      "checks": {
+        "ordinary_post": {
+          "passed": true,
+          "response": {
+            "status": 200,
+            "body": "CALCYBER_APACHE_CONTROL\nVERSION=7.4.33\nSAPI=apache2handler\nPID=12\nFILE_COUNT=0\nPART_LIMIT=\nPROGRESS_ENABLED=1\nPROGRESS_FILE=ABSENT\nFIELD_alpha=A\nFIELD_beta=ABSENT\nFIELD_gamma=ABSENT\n",
+            "error": "",
+            "values": {
+              "VERSION": "7.4.33",
+              "SAPI": "apache2handler",
+              "PID": "12",
+              "FILE_COUNT": "0",
+              "PART_LIMIT": "",
+              "PROGRESS_ENABLED": "1",
+              "PROGRESS_FILE": "ABSENT",
+              "FIELD_alpha": "A",
+              "FIELD_beta": "ABSENT",
+              "FIELD_gamma": "ABSENT"
+            }
+          }
+        },
+        "multipart_limit": {
+          "passed": true,
+          "response": {
+            "status": 200,
+            "body": "CALCYBER_APACHE_CONTROL\nVERSION=7.4.33\nSAPI=apache2handler\nPID=12\nFILE_COUNT=0\nPART_LIMIT=\nPROGRESS_ENABLED=1\nPROGRESS_FILE=ABSENT\nFIELD_alpha=A\nFIELD_beta=B\nFIELD_gamma=C\n",
+            "error": "",
+            "values": {
+              "VERSION": "7.4.33",
+              "SAPI": "apache2handler",
+              "PID": "12",
+              "FILE_COUNT": "0",
+              "PART_LIMIT": "",
+              "PROGRESS_ENABLED": "1",
+              "PROGRESS_FILE": "ABSENT",
+              "FIELD_alpha": "A",
+              "FIELD_beta": "B",
+              "FIELD_gamma": "C"
+            }
+          }
+        },
+        "session_progress_lifecycle": {
+          "passed": true,
+          "response": {
+            "status": 200,
+            "body": "CALCYBER_APACHE_CONTROL\nVERSION=7.4.33\nSAPI=apache2handler\nPID=12\nFILE_COUNT=1\nPART_LIMIT=\nPROGRESS_ENABLED=1\nPROGRESS_FILE=PRESENT\nFIELD_alpha=ABSENT\nFIELD_beta=ABSENT\nFIELD_gamma=ABSENT\n",
+            "error": "",
+            "values": {
+              "VERSION": "7.4.33",
+              "SAPI": "apache2handler",
+              "PID": "12",
+              "FILE_COUNT": "1",
+              "PART_LIMIT": "",
+              "PROGRESS_ENABLED": "1",
+              "PROGRESS_FILE": "PRESENT",
+              "FIELD_alpha": "ABSENT",
+              "FIELD_beta": "ABSENT",
+              "FIELD_gamma": "ABSENT"
+            }
+          }
+        },
+        "oom_lifecycle": {
+          "passed": true,
+          "response": {
+            "status": 200,
+            "body": "CALCYBER_OOM_STARTED PID=12\n\nFatal error: Allowed memory size of 8388608 bytes exhausted (tried to allocate 67108896 bytes) in /tmp/www/oom.php on line 9\nCALCYBER_SHUTDOWN_REACHED\n",
+            "error": "",
+            "values": {}
+          },
+          "shutdown_callback_reached": true,
+          "worker_replaced": false,
+          "log": "[27-Oct-2026 05:12:37 UTC] PHP Fatal error:  Allowed memory size of 8388608 bytes exhausted (tried to allocate 67108896 bytes) in /tmp/www/oom.php on line 9\n",
+          "health": {
+            "status": 200,
+            "body": "CALCYBER_APACHE_CONTROL\nVERSION=7.4.33\nSAPI=apache2handler\nPID=12\n",
+            "error": "",
+            "values": {
+              "VERSION": "7.4.33",
+              "SAPI": "apache2handler",
+              "PID": "12"
+            }
+          }
+        },
+        "exploit_producer_consumer": {
+          "passed": true,
+          "observations": [
+            {
+              "request_bytes": 15657436,
+              "worker_before": [
+                "12"
+              ],
+              "worker_after": [
+                "12"
+              ],
+              "response_bytes": 538,
+              "cookie_bytes": 0,
+              "oom_in_response": true,
+              "response_status": "HTTP/1.1 200 OK"
+            },
+            {
+              "request_bytes": 192,
+              "worker_before": [
+                "12"
+              ],
+              "worker_after": [],
+              "response_bytes": 0,
+              "cookie_bytes": 0,
+              "oom_in_response": false,
+              "response_status": ""
+            }
+          ],
+          "heap_corruptions": 1,
+          "segmentation_faults": 0,
+          "log": "[27-Oct-2026 05:12:41 UTC] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0\n[27-Oct-2026 05:12:41 UTC] PHP Warning:  Unknown: Cannot send session cookie - headers already sent in Unknown on line 0\n[27-Oct-2026 05:12:41 UTC] PHP Fatal error:  Allowed memory size of 8388608 bytes exhausted (tried to allocate 4197581 bytes) in Unknown on line 0\nzend_mm_heap corrupted\n[Tue Oct 27 05:12:42.803793 2026] [mpm_prefork:error] [pid 1] AH00161: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting\n",
+          "health": {
+            "status": 200,
+            "body": "CALCYBER_APACHE_CONTROL\nVERSION=7.4.33\nSAPI=apache2handler\nPID=37\n",
+            "error": "",
+            "values": {
+              "VERSION": "7.4.33",
+              "SAPI": "apache2handler",
+              "PID": "37"
+            }
+          },
+          "scope": "Supplied PoC rotation producer/cleanup requests; explicit engine corruption or SIGSEGV required on baseline. This is not command execution."
+        },
+        "final_health": {
+          "passed": true
+        }
+      },
+      "rce_proven": false,
+      "rce_patch_verified": false,
+      "full_poc": {
+        "exit_code": 1,
+        "zif_offset": "0x20ed00",
+        "dtor_offset": "0x2c2520",
+        "heap_leak_failed": true,
+        "fresh_nonce_match": false,
+        "proof_http_status": 404
+      },
+      "passed": true,
+      "apache_log": "[Tue Oct 27 05:12:32.734951 2026] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.54 (Debian) PHP/7.4.33 configured -- resuming normal operations\n[Tue Oct 27 05:12:32.734992 2026] [core:notice] [pid 1] AH00094: Command line: 'apache2 -f /input/httpd.conf -D FOREGROUND'\n[Tue Oct 27 05:12:33.377712 2026] [mpm_prefork:notice] [pid 1] AH00170: caught SIGWINCH, shutting down gracefully\n[Tue Oct 27 05:12:34.815518 2026] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.54 (Debian) PHP/7.4.33 configured -- resuming normal operations\n[Tue Oct 27 05:12:34.815576 2026] [core:notice] [pid 1] AH00094: Command line: 'apache2 -f /input/httpd.conf -D FOREGROUND'\n[Tue Oct 27 05:12:35.407766 2026] [mpm_prefork:notice] [pid 1] AH00170: caught SIGWINCH, shutting down gracefully\n[Tue Oct 27 05:12:36.831174 2026] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.54 (Debian) PHP/7.4.33 configured -- resuming normal operations\n[Tue Oct 27 05:12:36.831265 2026] [core:notice] [pid 1] AH00094: Command line: 'apache2 -f /input/httpd.conf -D FOREGROUND'\n[27-Oct-2026 05:12:37 UTC] PHP Fatal error:  Allowed memory size of 8388608 bytes exhausted (tried to allocate 67108896 bytes) in /tmp/www/oom.php on line 9\n[Tue Oct 27 05:12:39.324880 2026] [mpm_prefork:notice] [pid 1] AH00170: caught SIGWINCH, shutting down gracefully\n[Tue Oct 27 05:12:40.801667 2026] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.54 (Debian) PHP/7.4.33 configured -- resuming normal operations\n[Tue Oct 27 05:12:40.801733 2026] [core:notice] [pid 1] AH00094: Command line: 'apache2 -f /input/httpd.conf -D FOREGROUND'\n[27-Oct-2026 05:12:41 UTC] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0\n[27-Oct-2026 05:12:41 UTC] PHP Warning:  Unknown: Cannot send session cookie - headers already sent in Unknown on line 0\n[27-Oct-2026 05:12:41 UTC] PHP Fatal error:  Allowed memory size of 8388608 bytes exhausted (tried to allocate 4197581 bytes) in Unknown on line 0\nzend_mm_heap corrupted\n[Tue Oct 27 05:12:42.803793 2026] [mpm_prefork:error] [pid 1] AH00161: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting\n[Tue Oct 27 05:12:45.327574 2026] [mpm_prefork:notice] [pid 1] AH00170: caught SIGWINCH, shutting down gracefully\n[Tue Oct 27 05:12:46.719898 2026] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.54 (Debian) PHP/7.4.33 configured -- resuming normal operations\n[Tue Oct 27 05:12:46.719931 2026] [core:notice] [pid 1] AH00094: Command line: 'apache2 -f /input/httpd.conf -D FOREGROUND'\n[27-Oct-2026 05:12:47 UTC] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0\n[27-Oct-2026 05:12:47 UTC] PHP Warning:  Unknown: Cannot send session cookie - headers already sent in Unknown on line 0\n[27-Oct-2026 05:12:47 UTC] PHP Fatal error:  Allowed memory size of 8388608 bytes exhausted (tried to allocate 4197581 bytes) in Unknown on line 0\nzend_mm_heap corrupted\n[Tue Oct 27 05:12:48.722088 2026] [mpm_prefork:error] [pid 1] AH00161: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting\n[27-Oct-2026 05:12:49 UTC] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0\n[27-Oct-2026 05:12:49 UTC] PHP Warning:  Unknown: Cannot send session cookie - headers already sent in Unknown on line 0\n[27-Oct-2026 05:12:49 UTC] PHP Fatal error:  Allowed memory size of 8388608 bytes exhausted (tried to allocate 2098791 bytes) in Unknown on line 0\n[27-Oct-2026 05:12:49 UTC] PHP Warning:  Unknown: The session id is too long or contains illegal characters, valid characters are a-z, A-Z, 0-9 and '-,' in Unknown on line 0\n[27-Oct-2026 05:12:49 UTC] PHP Warning:  Unknown: Failed to read session data: files (path: /tmp) in Unknown on line 0\n[27-Oct-2026 05:12:49 UTC] PHP Warning:  Unknown: Failed to write session data (files). Please verify that the current setting of session.save_path is correct (/tmp) in Unknown on line 0\n[27-Oct-2026 05:12:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /tmp/www/index.php on line 2\n[27-Oct-2026 05:12:49 UTC] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0\n[27-Oct-2026 05:12:49 UTC] PHP Warning:  Unknown: Cannot send session cookie - headers already sent in Unknown on line 0\n[27-Oct-2026 05:12:49 UTC] PHP Fatal error:  Allowed memory size of 8388608 bytes exhausted (tried to allocate 4197581 bytes) in Unknown on line 0\nzend_mm_heap corrupted\n",
+      "container_stopped": true
+    },
+    "patched": {
+      "variant": "patched",
+      "name": "calcyber-apache74-patched-runtime-20261026-v2",
+      "module_sha256": "68c78e74f27d3fda9b67d3af7da135e326241a4aaf3510183bc03e19ac6fd2ac",
+      "checks": {
+        "ordinary_post": {
+          "passed": true,
+          "response": {
+            "status": 200,
+            "body": "CALCYBER_APACHE_CONTROL\nVERSION=7.4.33-p1\nSAPI=apache2handler\nPID=12\nFILE_COUNT=0\nPART_LIMIT=-1\nPROGRESS_ENABLED=1\nPROGRESS_FILE=ABSENT\nFIELD_alpha=A\nFIELD_beta=ABSENT\nFIELD_gamma=ABSENT\n",
+            "error": "",
+            "values": {
+              "VERSION": "7.4.33-p1",
+              "SAPI": "apache2handler",
+              "PID": "12",
+              "FILE_COUNT": "0",
+              "PART_LIMIT": "-1",
+              "PROGRESS_ENABLED": "1",
+              "PROGRESS_FILE": "ABSENT",
+              "FIELD_alpha": "A",
+              "FIELD_beta": "ABSENT",
+              "FIELD_gamma": "ABSENT"
+            }
+          }
+        },
+        "multipart_limit": {
+          "passed": true,
+          "response": {
+            "status": 200,
+            "body": "\nWarning: Unknown: Multipart body parts limit exceeded 2. To increase the limit change max_multipart_body_parts in php.ini. in Unknown on line 0\n\nWarning: Cannot modify header information - headers already sent in /tmp/www/limited/index.php on line 2\nCALCYBER_APACHE_CONTROL\nVERSION=7.4.33-p1\nSAPI=apache2handler\nPID=12\nFILE_COUNT=0\nPART_LIMIT=2\nPROGRESS_ENABLED=1\nPROGRESS_FILE=ABSENT\nFIELD_alpha=A\nFIELD_beta=B\nFIELD_gamma=ABSENT\n",
+            "error": "",
+            "values": {
+              "VERSION": "7.4.33-p1",
+              "SAPI": "apache2handler",
+              "PID": "12",
+              "FILE_COUNT": "0",
+              "PART_LIMIT": "2",
+              "PROGRESS_ENABLED": "1",
+              "PROGRESS_FILE": "ABSENT",
+              "FIELD_alpha": "A",
+              "FIELD_beta": "B",
+              "FIELD_gamma": "ABSENT"
+            }
+          }
+        },
+        "session_progress_lifecycle": {
+          "passed": true,
+          "response": {
+            "status": 200,
+            "body": "CALCYBER_APACHE_CONTROL\nVERSION=7.4.33-p1\nSAPI=apache2handler\nPID=12\nFILE_COUNT=1\nPART_LIMIT=-1\nPROGRESS_ENABLED=1\nPROGRESS_FILE=ABSENT\nFIELD_alpha=ABSENT\nFIELD_beta=ABSENT\nFIELD_gamma=ABSENT\n",
+            "error": "",
+            "values": {
+              "VERSION": "7.4.33-p1",
+              "SAPI": "apache2handler",
+              "PID": "12",
+              "FILE_COUNT": "1",
+              "PART_LIMIT": "-1",
+              "PROGRESS_ENABLED": "1",
+              "PROGRESS_FILE": "ABSENT",
+              "FIELD_alpha": "ABSENT",
+              "FIELD_beta": "ABSENT",
+              "FIELD_gamma": "ABSENT"
+            }
+          }
+        },
+        "oom_lifecycle": {
+          "passed": true,
+          "response": {
+            "status": 200,
+            "body": "CALCYBER_OOM_STARTED PID=12\n",
+            "error": "IncompleteRead",
+            "values": {}
+          },
+          "shutdown_callback_reached": false,
+          "worker_replaced": true,
+          "log": "\nFatal error: Allowed memory size of 8388608 bytes exhausted (tried to allocate 67108896 bytes) in /tmp/www/oom.php on line 9\n[Tue Oct 27 05:13:02.873235 2026] [mpm_prefork:error] [pid 1] AH00161: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting\n",
+          "health": {
+            "status": 200,
+            "body": "CALCYBER_APACHE_CONTROL\nVERSION=7.4.33-p1\nSAPI=apache2handler\nPID=13\n",
+            "error": "",
+            "values": {
+              "VERSION": "7.4.33-p1",
+              "SAPI": "apache2handler",
+              "PID": "13"
+            }
+          }
+        },
+        "exploit_producer_consumer": {
+          "passed": true,
+          "observations": [
+            {
+              "request_bytes": 15657436,
+              "worker_before": [
+                "12"
+              ],
+              "worker_after": [],
+              "response_bytes": 0,
+              "cookie_bytes": 0,
+              "oom_in_response": false,
+              "response_status": ""
+            },
+            {
+              "request_bytes": 192,
+              "worker_before": [],
+              "worker_after": [
+                "31"
+              ],
+              "response_bytes": 279,
+              "cookie_bytes": 0,
+              "oom_in_response": false,
+              "response_status": "HTTP/1.1 200 OK"
+            }
+          ],
+          "heap_corruptions": 0,
+          "segmentation_faults": 0,
+          "log": "[27-Oct-2026 05:13:06 UTC] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0\n\nFatal error: Allowed memory size of 8388608 bytes exhausted (tried to allocate 4197581 bytes) in Unknown on line 0\n[Tue Oct 27 05:13:06.869782 2026] [mpm_prefork:error] [pid 1] AH00161: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting\n",
+          "health": {
+            "status": 200,
+            "body": "CALCYBER_APACHE_CONTROL\nVERSION=7.4.33-p1\nSAPI=apache2handler\nPID=31\n",
+            "error": "",
+            "values": {
+              "VERSION": "7.4.33-p1",
+              "SAPI": "apache2handler",
+              "PID": "31"
+            }
+          },
+          "scope": "Supplied PoC rotation producer/cleanup requests; explicit engine corruption or SIGSEGV required on baseline. This is not command execution."
+        },
+        "final_health": {
+          "passed": true
+        }
+      },
+      "rce_proven": false,
+      "rce_patch_verified": false,
+      "full_poc": {
+        "exit_code": 1,
+        "zif_offset": "0x20e330",
+        "dtor_offset": "0x2c1d80",
+        "heap_leak_failed": true,
+        "fresh_nonce_match": false,
+        "proof_http_status": 404
+      },
+      "passed": true,
+      "apache_log": "[Tue Oct 27 05:12:57.695541 2026] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.54 (Debian) PHP/7.4.33-p1 configured -- resuming normal operations\n[Tue Oct 27 05:12:57.695586 2026] [core:notice] [pid 1] AH00094: Command line: 'apache2 -f /input/httpd.conf -D FOREGROUND'\n[Tue Oct 27 05:12:58.374578 2026] [mpm_prefork:notice] [pid 1] AH00170: caught SIGWINCH, shutting down gracefully\n[Tue Oct 27 05:12:59.808525 2026] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.54 (Debian) PHP/7.4.33-p1 configured -- resuming normal operations\n[Tue Oct 27 05:12:59.808574 2026] [core:notice] [pid 1] AH00094: Command line: 'apache2 -f /input/httpd.conf -D FOREGROUND'\n[27-Oct-2026 05:13:00 UTC] PHP Warning:  Unknown: Multipart body parts limit exceeded 2. To increase the limit change max_multipart_body_parts in php.ini. in Unknown on line 0\n[27-Oct-2026 05:13:00 UTC] PHP Warning:  Cannot modify header information - headers already sent in /tmp/www/limited/index.php on line 2\n[Tue Oct 27 05:13:00.403098 2026] [mpm_prefork:notice] [pid 1] AH00170: caught SIGWINCH, shutting down gracefully\n[Tue Oct 27 05:13:01.871377 2026] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.54 (Debian) PHP/7.4.33-p1 configured -- resuming normal operations\n[Tue Oct 27 05:13:01.871417 2026] [core:notice] [pid 1] AH00094: Command line: 'apache2 -f /input/httpd.conf -D FOREGROUND'\n\nFatal error: Allowed memory size of 8388608 bytes exhausted (tried to allocate 67108896 bytes) in /tmp/www/oom.php on line 9\n[Tue Oct 27 05:13:02.873235 2026] [mpm_prefork:error] [pid 1] AH00161: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting\n[Tue Oct 27 05:13:04.395905 2026] [mpm_prefork:notice] [pid 1] AH00170: caught SIGWINCH, shutting down gracefully\n[Tue Oct 27 05:13:05.869592 2026] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.54 (Debian) PHP/7.4.33-p1 configured -- resuming normal operations\n[Tue Oct 27 05:13:05.869632 2026] [core:notice] [pid 1] AH00094: Command line: 'apache2 -f /input/httpd.conf -D FOREGROUND'\n[27-Oct-2026 05:13:06 UTC] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0\n\nFatal error: Allowed memory size of 8388608 bytes exhausted (tried to allocate 4197581 bytes) in Unknown on line 0\n[Tue Oct 27 05:13:06.869782 2026] [mpm_prefork:error] [pid 1] AH00161: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting\n[Tue Oct 27 05:13:10.501022 2026] [mpm_prefork:notice] [pid 1] AH00170: caught SIGWINCH, shutting down gracefully\n[Tue Oct 27 05:13:11.923977 2026] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.54 (Debian) PHP/7.4.33-p1 configured -- resuming normal operations\n[Tue Oct 27 05:13:11.924019 2026] [core:notice] [pid 1] AH00094: Command line: 'apache2 -f /input/httpd.conf -D FOREGROUND'\n[27-Oct-2026 05:13:12 UTC] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0\n\nFatal error: Allowed memory size of 8388608 bytes exhausted (tried to allocate 4197581 bytes) in Unknown on line 0\n[Tue Oct 27 05:13:12.925361 2026] [mpm_prefork:error] [pid 1] AH00161: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting\n[27-Oct-2026 05:13:14 UTC] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0\n\nFatal error: Allowed memory size of 8388608 bytes exhausted (tried to allocate 2098791 bytes) in Unknown on line 0\n[27-Oct-2026 05:13:15 UTC] PHP Warning:  Unknown: Input variables exceeded 1000. To increase the limit change max_input_vars in php.ini. in Unknown on line 0\n\nFatal error: Allowed memory size of 8388608 bytes exhausted (tried to allocate 4197581 bytes) in Unknown on line 0\n",
+      "container_stopped": true
+    }
+  }
+}
